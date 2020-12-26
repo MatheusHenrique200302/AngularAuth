@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 const User = require('../models/user');
 var mongoose = require('mongoose');
-const { error } = require('console');
+// const { error } = require('console');
 const db = "mongodb+srv://matheusHenrique:159845@cluster0.asfun.mongodb.net/eventsdb?retryWrites=true&w=majority"
 
 mongoose.connect(db, err =>{
@@ -67,13 +67,21 @@ router.get('/special', function(req, res, next) {
 router.post('/register',function(req,res){
   let userData = req.body;
   let user = new User(userData);
-  user.save((error, registeredUser)=>{
-      if(error){
-        console.log(error);
-      }else{
-          res.status(200).send(registeredUser)
-      }
-  });
+  User.findOne({email: userData.email},(error,user1)=>{
+    if(user1){
+      res.status(401).send("Email already in use!");
+      
+    }else{
+      user.save((error, registeredUser)=>{
+        if(error){
+          console.log(error);
+        }else{
+            res.status(200).send(registeredUser)
+        }
+    });
+    }
+  })
+  
 });
 router.post('/login',function(req,res){
   let userData = req.body;
