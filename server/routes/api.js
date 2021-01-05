@@ -14,6 +14,22 @@ mongoose.connect(db, err =>{
   }
 })
 
+function verifyToken(req,res,next){
+  if(!req.headers.authorization){
+    return res.status(401).send("Unauthorized request");
+  } 
+    let token = req.headers.authorization.split(' ')[1];
+  if(token === 'null'){
+    return res.status(401).send("Unauthorized request");
+  }
+  let payload = jwt.verify(token,'secretKey');
+  if(!payload){
+    return res.status(401).send("Unauthorized request");
+  }
+  req.userId = payload.subject;
+  next();
+}
+
 /* GET users listing. */
 router.get('/events', function(req, res, next) {
   let events = [
@@ -39,7 +55,7 @@ router.get('/events', function(req, res, next) {
   res.json(events);
 });
 
-router.get('/special', function(req, res, next) {
+router.get('/special', verifyToken ,function(req, res, next) {
   let events = [
     {
       "_id": "1",
