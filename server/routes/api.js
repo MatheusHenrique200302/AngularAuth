@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+const jwt = require('jsonwebtoken')
 const User = require('../models/user');
 var mongoose = require('mongoose');
 // const { error } = require('console');
@@ -76,7 +77,9 @@ router.post('/register',function(req,res){
         if(error){
           console.log(error);
         }else{
-            res.status(200).send(registeredUser)
+          let payload = { subject: registeredUser._id};
+          let token = jwt.sign(payload,'secretKey');
+            res.status(200).send({token})
         }
     });
     }
@@ -95,7 +98,9 @@ router.post('/login',function(req,res){
         if(user.password !== userData.password){
           res.status(401).send("Invalid Password");
         }else{
-          res.status(200).send(user);
+          let payload = {subject: user._id};
+          let token = jwt.sign(payload,'secretKey')
+          res.status(200).send({token});
         }
       }
     }
