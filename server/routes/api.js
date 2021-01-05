@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+const jwt = require('jsonwebtoken')
 const User = require('../models/user');
 var mongoose = require('mongoose');
 // const { error } = require('console');
@@ -12,6 +13,22 @@ mongoose.connect(db, err =>{
     console.log("Connected to mongoDB!");
   }
 })
+
+function verifyToken(req,res,next){
+  if(!req.headers.authorization){
+    return res.status(401).send("Unauthorized request");
+  } 
+    let token = req.headers.authorization.split(' ')[1];
+  if(token === 'null'){
+    return res.status(401).send("Unauthorized request");
+  }
+  let payload = jwt.verify(token,'secretKey');
+  if(!payload){
+    return res.status(401).send("Unauthorized request");
+  }
+  req.userId = payload.subject;
+  next();
+}
 
 /* GET users listing. */
 router.get('/events', function(req, res, next) {
@@ -38,7 +55,7 @@ router.get('/events', function(req, res, next) {
   res.json(events);
 });
 
-router.get('/special', function(req, res, next) {
+router.get('/special', verifyToken ,function(req, res, next) {
   let events = [
     {
       "_id": "1",
@@ -76,7 +93,9 @@ router.post('/register',function(req,res){
         if(error){
           console.log(error);
         }else{
-            res.status(200).send(registeredUser)
+          let payload = { subject: registeredUser._id};
+          let token = jwt.sign(payload,'secretKey');
+            res.status(200).send({token})
         }
     });
     }
@@ -95,7 +114,9 @@ router.post('/login',function(req,res){
         if(user.password !== userData.password){
           res.status(401).send("Invalid Password");
         }else{
-          res.status(200).send(user);
+          let payload = {subject: user._id};
+          let token = jwt.sign(payload,'secretKey')
+          res.status(200).send({token});
         }
       }
     }
