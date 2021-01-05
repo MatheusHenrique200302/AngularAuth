@@ -7,5 +7,5 @@ import { AuthService } from './auth.service'
 })
 export class AppComponent {
   title = 'ngApp';
-  constructor(private _authService : AuthService){ }
+  constructor(public authService : AuthService){ }
 }
