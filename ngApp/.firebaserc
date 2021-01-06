@@ -1,0 +1,11 @@
+{
+  "targets": {
+    "angular-auth-740fa": {
+      "hosting": {
+        "ngApp": [
+          "angular-auth-740fa"
+        ]
+      }
+    }
+  }
+}
