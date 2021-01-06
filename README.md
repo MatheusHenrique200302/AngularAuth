@@ -5,4 +5,4 @@ If you're looking for a Angular tutorial about authentication, give it a try!
 
 In this project, when you visit the page, you land on the events page/component, that have some dummy events with lorem ipsum descriptions, you can't reach the 'members' page/component unless you have a account logged in, to check that, try logging in with the email "a@a.com" and with the password "123". 
 
-#DO NOT REGISTER REAL PERSONAL INFO, THERES BASICALLY NONE SECURITY IN THIS PROJECT, SOME SMART PEOPLE CAN GET ACCESS TO INFO YOU PUT IN THERE, I AM NOT RESPONSIBLE FOR ANY INFO THAT CAN GET STOLEN
+# DO NOT REGISTER REAL PERSONAL INFO, THERES BASICALLY NONE SECURITY IN THIS PROJECT, SOME SMART PEOPLE CAN GET ACCESS TO INFO YOU PUT IN THERE, I AM NOT RESPONSIBLE FOR ANY INFO THAT CAN GET STOLEN
